@@ -1,0 +1,6 @@
+[theme]
+border_char = "+"
+header_border_char = "-"
+column_border_char = "|"
+header_color = "cyan"
+row_color = "white"
