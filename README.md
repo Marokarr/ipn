@@ -18,6 +18,12 @@ A simple tool to display network information, including DNS servers, on various 
 
 ### Install via pip
 
+Download, extract and enter the directoy
+
+```sh
+cd ipn
+```
+
 To install the `ipn` package, run:
 
 ```sh
