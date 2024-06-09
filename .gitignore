@@ -69,6 +69,3 @@ coverage.*
 # Windows
 Thumbs.db
 Desktop.ini
-
-# Setup
-setup.py
