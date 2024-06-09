@@ -6,6 +6,10 @@ import textwrap
 import toml
 from colorama import Fore, Style, init
 
+# Add imports for Windows registry access
+if platform.system() == "Windows":
+    import winreg
+
 init(autoreset=True)
 
 # Determine the config file path based on the OS
@@ -65,6 +69,42 @@ def get_color(color_name):
 header_color = get_color(theme["header_color"])
 row_color = get_color(theme["row_color"])
 
+def get_windows_dns():
+    dns_servers = {}
+    try:
+        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r'SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces') as interfaces_key:
+            for i in range(winreg.QueryInfoKey(interfaces_key)[0]):
+                interface_key_name = winreg.EnumKey(interfaces_key, i)
+                with winreg.OpenKey(interfaces_key, interface_key_name) as interface_key:
+                    try:
+                        name_server = winreg.QueryValueEx(interface_key, 'NameServer')[0]
+                        if name_server:
+                            dns_servers[interface_key_name] = name_server.split(',')
+                    except FileNotFoundError:
+                        pass
+    except Exception as e:
+        print(f"Failed to retrieve DNS settings from registry: {e}")
+    return dns_servers
+
+def get_unix_dns():
+    dns_servers = {}
+    try:
+        with open("/etc/resolv.conf") as f:
+            dns_servers["Global DNS"] = []
+            for line in f:
+                if line.startswith("nameserver"):
+                    dns_servers["Global DNS"].append(line.split()[1])
+    except Exception as e:
+        print(f"Failed to read /etc/resolv.conf: {e}")
+    return dns_servers
+
+def get_dns_info():
+    os_type = platform.system()
+    if os_type == "Windows":
+        return get_windows_dns()
+    else:
+        return get_unix_dns()
+
 def get_network_info():
     network_info = []
 
@@ -90,28 +130,8 @@ def get_network_info():
             network_info.append((interface_name, ", ".join(addresses)))
 
     # Get DNS servers
-    dns_dict = {}
-    if os_type == "Windows":
-        # Windows specific method to get DNS servers
-        output = os.popen("ipconfig /all").read()
-        current_adapter = None
-        for line in output.splitlines():
-            if "adapter" in line:
-                current_adapter = line.strip(':')
-                dns_dict[current_adapter] = []
-            elif "DNS Servers" in line:
-                dns_dict[current_adapter].append(line.split(":")[-1].strip())
-            elif current_adapter and dns_dict[current_adapter] and line.startswith(' '):
-                dns_dict[current_adapter].append(line.strip())
-    else:
-        # Unix-like systems method to get DNS servers
-        dns_dict["Global DNS"] = []
-        with open("/etc/resolv.conf") as f:
-            for line in f:
-                if line.startswith("nameserver"):
-                    dns_dict["Global DNS"].append(line.split()[1])
-    
-    for adapter, dns_servers in dns_dict.items():
+    dns_info = get_dns_info()
+    for adapter, dns_servers in dns_info.items():
         if dns_servers:
             network_info.append((f"DNS Servers ({adapter})", ", ".join(dns_servers)))
 
