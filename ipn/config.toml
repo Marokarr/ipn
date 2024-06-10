@@ -1,6 +1,7 @@
 [theme]
+header_color = "cyan"
+row_color = "yellow"
+border_color = "green"
 border_char = "+"
 header_border_char = "-"
 column_border_char = "|"
-header_color = "cyan"
-row_color = "white"

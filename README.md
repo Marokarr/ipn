@@ -1,13 +1,13 @@
 # IPN - Network Information Tool
 
-A simple tool to display network information, including DNS servers, on various platforms.
+IPN is a simple and intuitive command-line tool that displays essential network information, including DNS servers, on various platforms. It provides a quick and convenient way to access important network details.
 
-## Features
+## Key Features
 
-- Displays operating system information
-- Shows hostname and local IP address
-- Lists network interfaces and their IP addresses
-- Supports theming via a configuration file
+- 📊 Displays operating system information
+- 🖥️ Shows hostname and local IP address
+- 🌐 Lists network interfaces and their IP addresses
+- 🎨 Supports theming via a configuration file
 
 ## Installation
 
@@ -18,30 +18,24 @@ A simple tool to display network information, including DNS servers, on various 
 
 ### Install via pip
 
-Download, extract and enter the directoy
-
-```sh
-cd ipn
-```
-
-To install the `ipn` package, run:
+To install the `ipn` package, simply run:
 
 ```sh
 pip install .
 ```
 
-This will install the `ipn` command and ensure it is available in your PATH.
+This command will install the `ipn` command and ensure it is available in your PATH.
 
 ## Configuration
 
-The tool supports theming via a configuration file. The configuration file should be located at:
+IPN supports theming through a configuration file. The file should be located at:
 
 - **Linux/MacOS**: `~/.config/ipn/config.toml`
 - **Windows**: `%LOCALAPPDATA%\ipn\config.toml`
 
 ### Default Configuration
 
-If the configuration file does not exist, it will be created with the following default settings:
+If the configuration file doesn't exist, it will be created with the following default settings:
 
 ```toml
 [theme]
@@ -52,7 +46,7 @@ header_color = "cyan"
 row_color = "white"
 ```
 
-You can modify the configuration file to change the theme.
+Feel free to modify the configuration file to customize the theme according to your preferences.
 
 ## Usage
 
@@ -64,6 +58,16 @@ ipn
 
 ## Troubleshooting
 
+### Linux Debian missing `nmcli`
+
+If `nmcli` is not found, follow these steps:
+
+1. **Install `nmcli`**:
+
+   ```sh
+   sudo apt install network-manager
+   ```
+
 ### Command Not Found
 
 If the `ipn` command is not found, ensure the Python scripts directory is in your PATH.
@@ -71,6 +75,7 @@ If the `ipn` command is not found, ensure the Python scripts directory is in you
 #### Linux/MacOS/WSL
 
 1. **Locate the Scripts Directory**:
+
    Run the following command to determine where Python user scripts are installed:
 
    ```sh
@@ -80,11 +85,15 @@ If the `ipn` command is not found, ensure the Python scripts directory is in you
    Typically, the scripts are located in `~/.local/bin`.
 
 2. **Add to PATH**:
+
    Add the scripts directory to your PATH by modifying your shell configuration file (`~/.bashrc`, `~/.zshrc`, or similar):
+
    ```sh
    echo 'export PATH=$PATH:~/.local/bin' >> ~/.bashrc
    ```
+
    Source the file to apply the changes:
+
    ```sh
    source ~/.bashrc
    ```
@@ -92,16 +101,20 @@ If the `ipn` command is not found, ensure the Python scripts directory is in you
 #### Windows
 
 1. **Locate the Scripts Directory**:
+
    The scripts are typically located in `C:\Users\<YourUsername>\AppData\Local\Programs\Python\Python<version>\Scripts`.
 
 2. **Add to PATH**:
+
    - Open the Start Search, type in "env", and select "Edit the system environment variables".
    - In the System Properties window, click on the "Environment Variables..." button.
    - In the Environment Variables window, find the "Path" variable in the "System variables" section, select it, and click "Edit...".
    - Add the path to the scripts directory, for example:
-     ```sh
+
+     ```
      C:\Users\<YourUsername>\AppData\Local\Programs\Python\Python<version>\Scripts
      ```
+
    - Click OK on all windows to save the changes.
 
 ## Contributing
